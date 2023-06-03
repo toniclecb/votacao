@@ -2,14 +2,17 @@ package com.toniclecb.pauta.model.dto;
 
 import com.toniclecb.pauta.model.Associado;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
 public class AssociadoRequestDTO {
 
 	@NotBlank(message = "Nome é obrigatório!")
+	@Schema(description = "Nome do associado", example = "Maria da Silva")
 	private String nome;
 
 	@NotBlank(message = "CPF é obrigatório!")
+	@Schema(description = "CPF do associado", example = "36599334067")
 	private String cpf;
 	
 	public AssociadoRequestDTO() {

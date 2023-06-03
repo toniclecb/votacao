@@ -1,5 +1,6 @@
 # logs
 *.log
+*.db
 
 HELP.md
 target/

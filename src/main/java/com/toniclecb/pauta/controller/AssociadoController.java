@@ -11,6 +11,11 @@ import com.toniclecb.pauta.model.dto.AssociadoRequestDTO;
 import com.toniclecb.pauta.model.dto.AssociadoResponseDTO;
 import com.toniclecb.pauta.service.AssociadoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 /**
@@ -21,15 +26,20 @@ import jakarta.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/v1/associado")
+@Tag(name = "Associados", description = "Gestão de associados")
 public class AssociadoController {
 	@Autowired
 	private AssociadoService service;
 
 	@PostMapping
-	public ResponseEntity<AssociadoResponseDTO> post(@Valid @RequestBody AssociadoRequestDTO associadoDto){
+	@Operation(summary = "Criar um novo associado")
+	@ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Associado criado com sucesso!"),
+        @ApiResponse(responseCode = "400", description = "Informações fornecidas incorretas!"),
+	})
+	public ResponseEntity<AssociadoResponseDTO> post(@Parameter(description = "Dados do associado") @Valid @RequestBody AssociadoRequestDTO associadoDto){
 		AssociadoResponseDTO saved = service.insertAssociado(associadoDto);
 		
 		return ResponseEntity.created(null).body(saved);
 	}
 }
-//TODO fazer os testes
