@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.toniclecb.pauta.exception.ConflictException;
 import com.toniclecb.pauta.exception.ExceptionResponse;
 import com.toniclecb.pauta.exception.ResourceNotFoundException;
 
@@ -45,5 +46,12 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		ExceptionResponse exceptionResponse = 
 				new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(ConflictException.class)
+	public final ResponseEntity<ExceptionResponse> handleConflictException(Exception ex, WebRequest request) {
+		ExceptionResponse exceptionResponse =
+				new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+		return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
 	}
 }
