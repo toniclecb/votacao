@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.toniclecb.pauta.exception.ConflictException;
 import com.toniclecb.pauta.exception.ExceptionResponse;
+import com.toniclecb.pauta.exception.ForbiddenException;
 import com.toniclecb.pauta.exception.ResourceNotFoundException;
 
 @ControllerAdvice
@@ -53,5 +54,12 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		ExceptionResponse exceptionResponse =
 				new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(ForbiddenException.class)
+	public final ResponseEntity<ExceptionResponse> handleForbiddenException(Exception ex, WebRequest request) {
+		ExceptionResponse exceptionResponse =
+				new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+		return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
 	}
 }
