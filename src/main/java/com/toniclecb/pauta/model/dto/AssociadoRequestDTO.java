@@ -18,8 +18,7 @@ public class AssociadoRequestDTO {
 	public AssociadoRequestDTO() {
 	}
 	
-	public AssociadoRequestDTO(@NotBlank(message = "Nome é obrigatório!") String nome,
-			@NotBlank(message = "CPF é obrigatório!") String cpf) {
+	public AssociadoRequestDTO(String nome, String cpf) {
 		super();
 		this.nome = nome;
 		this.cpf = cpf;
