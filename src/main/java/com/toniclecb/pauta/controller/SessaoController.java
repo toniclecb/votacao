@@ -38,7 +38,7 @@ public class SessaoController {
 	private SessaoService service;
 
 	@PostMapping
-	@Operation(summary = "Abrir uma sessão de votação")
+	@Operation(summary = "Abrir uma sessão de votação (inicia o período de tempo de votação)")
 	@ApiResponses({
         @ApiResponse(responseCode = "201", description = "Sessão iniciada com sucesso!"),
         @ApiResponse(responseCode = "400", description = "Informações fornecidas incorretas!"),
@@ -60,7 +60,7 @@ public class SessaoController {
         @ApiResponse(responseCode = "403", description = "O período de votação para a pauta já foi finalizado!"),
         @ApiResponse(responseCode = "409", description = "A votação ainda não foi iniciada ou o voto já foi realizado pelo associado!"),
 	})
-	public ResponseEntity<VotoResponseDTO> post(@Parameter(description = "Voto do associado para a pauta") @Valid @RequestBody VotoRequestDTO votoDto){
+	public ResponseEntity<VotoResponseDTO> post(@Parameter(description = "Voto do associado para a determinada pauta") @Valid @RequestBody VotoRequestDTO votoDto){
 		VotoResponseDTO saved = service.insertVoto(votoDto);
 
 		return ResponseEntity.created(null).body(saved);

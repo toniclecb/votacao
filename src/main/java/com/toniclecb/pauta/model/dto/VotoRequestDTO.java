@@ -14,7 +14,7 @@ public class VotoRequestDTO {
 	private Long idAssociado;
 	
 	@NotNull(message = "Voto do associado é obrigatório!")
-	@Schema(description = "Voto do associado para a pauta", example = "SIM")
+	@Schema(description = "Voto do associado para a pauta (Qualquer texto diferente de 'SIM' é considerado 'NÃO'!", example = "SIM")
 	private String voto;
 	
 	public VotoRequestDTO() {
@@ -25,8 +25,6 @@ public class VotoRequestDTO {
 		this.idAssociado = idAssociado;
 		this.voto = voto;
 	}
-
-
 
 	public Long getIdPauta() {
 		return idPauta;
