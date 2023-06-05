@@ -26,12 +26,15 @@ import com.toniclecb.pauta.model.Sessao;
 import com.toniclecb.pauta.model.Voto;
 import com.toniclecb.pauta.model.dto.SessaoRequestDTO;
 import com.toniclecb.pauta.model.dto.SessaoResponseDTO;
+import com.toniclecb.pauta.model.dto.SessaoResultadoResponseDTO;
 import com.toniclecb.pauta.model.dto.VotoRequestDTO;
 import com.toniclecb.pauta.model.dto.VotoResponseDTO;
+import com.toniclecb.pauta.model.projection.VotoProjection;
 import com.toniclecb.pauta.repository.AssociadoRepository;
 import com.toniclecb.pauta.repository.PautaRepository;
 import com.toniclecb.pauta.repository.SessaoRepository;
 import com.toniclecb.pauta.repository.VotoRepository;
+import com.toniclecb.pauta.util.DateUtil;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -51,7 +54,81 @@ public class SessaoServiceTest {
 	
     @InjectMocks
     private SessaoService service;
+    
+    @Test
+    public void testGetSessao() {
+    	Pauta pautaEntity = new Pauta(10L, "pauta", "descricao da pauta");
+        Sessao sessaoEntity = new Sessao(pautaEntity);
+        Date data = new Date();
+        sessaoEntity.setInicioVotacao(new Date(data.getTime() - 3600));
+        sessaoEntity.setFimVotacao(new Date(data.getTime() - 3000));
+        VotoProjection votacao = new VotoProjection() {
+			
+			@Override
+			public int getTotal() {
+				return 10;
+			}
+			
+			@Override
+			public int getSim() {
+				return 5;
+			}
+			
+			@Override
+			public int getNao() {
+				return 5;
+			}
+		};
+        
+        Mockito.when(pautaRepository.findById(10L)).thenReturn(Optional.of(pautaEntity));
+        Mockito.when(sessaoRepository.findByPautaId(10L)).thenReturn(sessaoEntity);
+        Mockito.when(sessaoRepository.save(any())).thenReturn(sessaoEntity);
+        Mockito.when(votoRepository.findVotacaoByIdSessao(sessaoEntity.getId())).thenReturn(votacao);
+        
+        SessaoResultadoResponseDTO response = service.getSessao(10L);
+        
+        Assert.assertEquals(5, response.getVotosSim());
+        Assert.assertEquals(5, response.getVotosNao());
+        Assert.assertEquals("Votação Finalizada!", response.getSituacao());
+    }
 
+    @Test
+    public void testGetSessaoEmAndamento() {
+    	Pauta pautaEntity = new Pauta(10L, "pauta", "descricao da pauta");
+        Sessao sessaoEntity = new Sessao(pautaEntity);
+        Date data = new Date();
+        sessaoEntity.setInicioVotacao(new Date(data.getTime()));
+        sessaoEntity.setFimVotacao(new Date(data.getTime() + 360));
+        VotoProjection votacao = new VotoProjection() {
+			
+			@Override
+			public int getTotal() {
+				return 10;
+			}
+			
+			@Override
+			public int getSim() {
+				return 9;
+			}
+			
+			@Override
+			public int getNao() {
+				return 1;
+			}
+		};
+        
+        Mockito.when(pautaRepository.findById(10L)).thenReturn(Optional.of(pautaEntity));
+        Mockito.when(sessaoRepository.findByPautaId(10L)).thenReturn(sessaoEntity);
+        Mockito.when(sessaoRepository.save(any())).thenReturn(sessaoEntity);
+        Mockito.when(votoRepository.findVotacaoByIdSessao(sessaoEntity.getId())).thenReturn(votacao);
+        
+        SessaoResultadoResponseDTO response = service.getSessao(10L);
+        
+        Assert.assertEquals(9, response.getVotosSim());
+        Assert.assertEquals(1, response.getVotosNao());
+        Assert.assertEquals("Votação em andamento!", response.getSituacao());
+    }
+    
     @Test
     public void testInicioSessao(){
         Pauta pautaEntity = new Pauta(10L, "pauta", "descricao da pauta");
