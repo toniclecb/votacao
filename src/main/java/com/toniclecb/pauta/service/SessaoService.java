@@ -15,8 +15,10 @@ import com.toniclecb.pauta.model.Sessao;
 import com.toniclecb.pauta.model.Voto;
 import com.toniclecb.pauta.model.dto.SessaoRequestDTO;
 import com.toniclecb.pauta.model.dto.SessaoResponseDTO;
+import com.toniclecb.pauta.model.dto.SessaoResultadoResponseDTO;
 import com.toniclecb.pauta.model.dto.VotoRequestDTO;
 import com.toniclecb.pauta.model.dto.VotoResponseDTO;
+import com.toniclecb.pauta.model.projection.VotoProjection;
 import com.toniclecb.pauta.repository.AssociadoRepository;
 import com.toniclecb.pauta.repository.PautaRepository;
 import com.toniclecb.pauta.repository.SessaoRepository;
@@ -50,6 +52,23 @@ public class SessaoService {
 		return new SessaoResponseDTO(saved);
 	}
 
+	public SessaoResultadoResponseDTO getSessao(Long idPauta) {
+		Sessao sessao = sessaoRepository.findByPautaId(idPauta);
+		SessaoResultadoResponseDTO sessaoResultado = new SessaoResultadoResponseDTO(sessao);
+		
+		VotoProjection votacao = votoRepository.findVotacaoByIdSessao(sessao.getId());
+		sessaoResultado.setVotosSim(votacao.getSim());
+		sessaoResultado.setVotosNao(votacao.getNao());
+		Date data = new Date();
+		if (DateUtil.dentroDoPeriodo(data, sessao.getInicioVotacao(), sessao.getFimVotacao())) {
+			sessaoResultado.setSituacao("Votação em andamento!");
+		} else {
+			sessaoResultado.setSituacao("Votação Finalizada!");
+		}
+		
+		return sessaoResultado;
+	}
+	
 	public VotoResponseDTO insertVoto(VotoRequestDTO requestDto) {
 		Associado associado = associadoRepository.findById(requestDto.getIdAssociado()).orElseThrow(
 				() -> new ResourceNotFoundException("Associado não encontrado para o id: " + requestDto.getIdAssociado()));
