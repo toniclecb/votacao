@@ -59,8 +59,10 @@ public class SessaoService {
 		SessaoResultadoResponseDTO sessaoResultado = new SessaoResultadoResponseDTO(sessao);
 		
 		VotoProjection votacao = votoRepository.findVotacaoByIdSessao(sessao.getId());
-		sessaoResultado.setVotosSim(votacao.getSim());
-		sessaoResultado.setVotosNao(votacao.getNao());
+		if (votacao != null) {
+			sessaoResultado.setVotosSim(votacao.getSim());
+			sessaoResultado.setVotosNao(votacao.getNao());
+		}
 		Date data = new Date();
 		if (DateUtil.dentroDoPeriodo(data, sessao.getInicioVotacao(), sessao.getFimVotacao())) {
 			sessaoResultado.setSituacao("Votação em andamento!");
