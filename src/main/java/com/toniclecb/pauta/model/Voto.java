@@ -9,13 +9,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints = {
-	@UniqueConstraint(columnNames = {"id_sessao", "id_associado"})
+	@UniqueConstraint(columnNames = {"sessao_id", "associado_id"})
 })
 public class Voto implements Serializable {
 	private static final long serialVersionUID = 3641101252355921103L;
@@ -24,12 +26,12 @@ public class Voto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne
-	@JoinColumn(name ="id_sessao", referencedColumnName= "id")
+	@ManyToOne
+	@JoinColumn(referencedColumnName= "id")
 	private Sessao sessao;
 
-	@OneToOne
-	@JoinColumn(name ="id_associado", referencedColumnName= "id")
+	@ManyToOne
+	@JoinColumn(referencedColumnName= "id")
 	private Associado associado;
 	
 	@Column
