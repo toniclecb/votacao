@@ -2,6 +2,8 @@ package com.toniclecb.pauta.service;
 
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ import com.toniclecb.pauta.util.DateUtil;
 
 @Service
 public class SessaoService {
+	private static final Logger log = LoggerFactory.getLogger(SessaoService.class);
+	
 	@Autowired
 	private SessaoRepository sessaoRepository;
 	
@@ -42,6 +46,7 @@ public class SessaoService {
 	public SessaoResponseDTO insertSessao(SessaoRequestDTO requestDto) {
 		Sessao sessaoJaExiste = sessaoRepository.findByPautaId(requestDto.getIdPauta());
 		if (sessaoJaExiste != null) {
+			log.info("A votação já foi iniciada para a pauta fornecida com o id: " + requestDto.getIdPauta());
 			throw new ConflictException("A votação já foi iniciada para a pauta fornecida com o id: " + requestDto.getIdPauta());
 		}
 		
@@ -92,6 +97,7 @@ public class SessaoService {
 			return new VotoResponseDTO(saved.getId(), saved.getSessao().getPauta().getId(), saved.getSessao().getId(),
 					saved.getAssociado().getId(), saved.isVoto() ? "SIM" : "NÃO", saved.getDataVoto());
 		} catch (DataIntegrityViolationException e) {
+			log.info("O voto do associado já foi contabilizado!");
 			throw new ConflictException("O voto do associado já foi contabilizado!");
 		}
 	}
@@ -126,6 +132,7 @@ public class SessaoService {
 	private Sessao getSessao(Pauta pauta) {
 		Sessao sessao = sessaoRepository.findByPautaId(pauta.getId());
 		if (sessao == null) {
+			log.info("A votação ainda não foi iniciada! IdPauta: " + pauta.getId());
 			throw new ConflictException("A votação ainda não foi iniciada!");
 		}
 		return sessao;
@@ -134,6 +141,7 @@ public class SessaoService {
 	private Date validaDataVoto(Sessao sessao) {
 		Date dataVoto = new Date();
 		if (!DateUtil.dentroDoPeriodo(dataVoto, sessao.getInicioVotacao(), sessao.getFimVotacao())) {
+			log.info("O período de votação para a pauta já foi finalizado!" + sessao.getId());
 			throw new ForbiddenException("O período de votação para a pauta já foi finalizado!");
 		}
 		return dataVoto;
