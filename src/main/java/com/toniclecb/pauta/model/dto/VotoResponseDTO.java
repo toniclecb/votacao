@@ -2,13 +2,21 @@ package com.toniclecb.pauta.model.dto;
 
 import java.util.Date;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class VotoResponseDTO {
 
+	@Schema(description = "Código identificador do voto", example = "2")
 	private Long idVoto;
+	@Schema(description = "Código identificador da pauta", example = "2")
 	private Long idPauta;
+	@Schema(description = "Código identificador da sessão", example = "2")
 	private Long idSessao;
+	@Schema(description = "Código identificador do associado", example = "2")
 	private Long idAssociado;
+	@Schema(description = "Voto contabilizado", example = "NÃO")
 	private String voto;
+	@Schema(description = "Data do voto contabilizado", example = "2023-06-06T01:05:50.925+00:00")
 	private Date dataVoto;
 	
 	public VotoResponseDTO() {

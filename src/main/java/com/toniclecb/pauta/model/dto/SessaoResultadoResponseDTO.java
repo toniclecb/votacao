@@ -4,13 +4,21 @@ import java.util.Date;
 
 import com.toniclecb.pauta.model.Sessao;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class SessaoResultadoResponseDTO {
 
+	@Schema(description = "Código identificador da sessão", example = "2")
 	private Long id;
+	@Schema(description = "Código identificador da pauta", example = "2")
 	private Long idPauta;
+	@Schema(description = "Data de inicio da votação", example = "2023-06-06T01:05:50.925+00:00")
 	private Date inicioVotacao;
+	@Schema(description = "Data do fim da votação", example = "2023-06-06T01:05:50.925+00:00")
 	private Date fimVotacao;
+	@Schema(description = "Quantidade de votos contabilizados como SIM", example = "32")
 	private int votosSim;
+	@Schema(description = "Quantidade de votos contabilizados como NÃO", example = "16")
 	private int votosNao;
 	private String situacao;
 

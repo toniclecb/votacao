@@ -45,7 +45,7 @@ public class SessaoController {
         @ApiResponse(responseCode = "404", description = "Pauta fornecida não encontrada!"),
         @ApiResponse(responseCode = "409", description = "Sessão já iniciada para pauta fornecida!"),
 	})
-	public ResponseEntity<SessaoResponseDTO> post(@Parameter(description = "Pauta selecionada para início") @Valid @RequestBody SessaoRequestDTO sessaoDto){
+	public ResponseEntity<SessaoResponseDTO> post(@Parameter(description = "Pauta selecionada para início da votação") @Valid @RequestBody SessaoRequestDTO sessaoDto){
 		SessaoResponseDTO saved = service.insertSessao(sessaoDto);
 		
 		return ResponseEntity.created(null).body(saved);
