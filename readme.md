@@ -62,7 +62,14 @@ As informações de conexão que a aplicação necessita estão no arquivo appli
 
 ## Melhorias gerais
 
-Utilizar HATEOAS para ficar mais próximo de uma API Restful.
-******Scheduled
-******Mensageria
+- Utilizar **HATEOAS** para ficar mais próximo de uma API Restful.
+
+- A principal melhoria, que também traria bom ganhos em performace, é **agendar uma tarefa** que encerra a sessão de votação.
+Com isso, ao invés de comparação entre datas, poderia haver uma comparação com um booleano para definir se o voto pode ser contabilizado naquela data.
+Isso também contribuiria para facilitar a implementação de mensageria (outro tópico de melhoria).
+Mas da mesma forma que traz benefícios essa mudança traz alterações de lógicas e cuidados grandes de implementação, por exemplo, precisa existir um lógica para toda vez que a aplicação ser iniciada ela buscar as sessões de votação e fazer o agendamento do fim da votação, assim como, finalizar as sessões que terminaram enquanto a aplicação estava desligada.
+
+- Adicionar **mensageria**, dentre outros benefícios, é uma forma de acelerar a troca de informações entre aplicações, então postar uma mensagem informando o fim da votação e seu resultado pode beneficar os sistemas que recebem essa mensagem.
+
+- O ponto mais crítico dessa aplicação é a inserção de um voto, pois existem diversas checagens que buscam informações no banco de dados para garantir a integridade dos dados. Neste ponto, poderia ser optado por utilização de uma tecnologia de **Cache**. Uma das opções, por exemplo, seria deixar em cache as sessões com votação em andamento, assim eliminaríamos a necessidade de busca no banco de dados a cada requisição.g
 
