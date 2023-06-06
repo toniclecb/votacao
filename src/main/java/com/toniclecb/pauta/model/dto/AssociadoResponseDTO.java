@@ -1,7 +1,5 @@
 package com.toniclecb.pauta.model.dto;
 
-import com.toniclecb.pauta.model.Associado;
-
 public class AssociadoResponseDTO {
 
 	private Long id;
@@ -9,12 +7,6 @@ public class AssociadoResponseDTO {
 	private String cpf;
 	
 	public AssociadoResponseDTO() {
-	}
-
-	public AssociadoResponseDTO(Associado associado) {
-		this.id = associado.getId();
-		this.nome = associado.getNome();
-		this.cpf = associado.getCpf();
 	}
 	
 	public Long getId() {
@@ -40,6 +32,4 @@ public class AssociadoResponseDTO {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	
-	
 }

@@ -20,6 +20,7 @@ import com.toniclecb.pauta.model.dto.SessaoResponseDTO;
 import com.toniclecb.pauta.model.dto.SessaoResultadoResponseDTO;
 import com.toniclecb.pauta.model.dto.VotoRequestDTO;
 import com.toniclecb.pauta.model.dto.VotoResponseDTO;
+import com.toniclecb.pauta.model.mapper.Mapper;
 import com.toniclecb.pauta.model.projection.VotoProjection;
 import com.toniclecb.pauta.repository.AssociadoRepository;
 import com.toniclecb.pauta.repository.PautaRepository;
@@ -30,6 +31,12 @@ import com.toniclecb.pauta.util.DateUtil;
 @Service
 public class SessaoService {
 	private static final Logger log = LoggerFactory.getLogger(SessaoService.class);
+	
+	@Autowired
+	private Mapper<Voto, VotoResponseDTO> votoToVotoResponseMapper;
+
+	@Autowired
+	private Mapper<Sessao, SessaoResponseDTO> sessaoToSessaoResponseMapper;
 	
 	@Autowired
 	private SessaoRepository sessaoRepository;
@@ -54,7 +61,7 @@ public class SessaoService {
 				() -> new ResourceNotFoundException("Pauta não encontrada para o id: " + requestDto.getIdPauta()));
 
 		Sessao saved = sessaoRepository.save(requestDto.toEntity(pauta));
-		return new SessaoResponseDTO(saved);
+		return sessaoToSessaoResponseMapper.toResponse(saved);
 	}
 
 	public SessaoResultadoResponseDTO getSessao(Long idPauta) {
@@ -94,8 +101,7 @@ public class SessaoService {
 		try {
 			Voto saved = votoRepository.save(votoEntity);
 
-			return new VotoResponseDTO(saved.getId(), saved.getSessao().getPauta().getId(), saved.getSessao().getId(),
-					saved.getAssociado().getId(), saved.isVoto() ? "SIM" : "NÃO", saved.getDataVoto());
+			return votoToVotoResponseMapper.toResponse(votoEntity);
 		} catch (DataIntegrityViolationException e) {
 			log.info("O voto do associado já foi contabilizado!");
 			throw new ConflictException("O voto do associado já foi contabilizado!");

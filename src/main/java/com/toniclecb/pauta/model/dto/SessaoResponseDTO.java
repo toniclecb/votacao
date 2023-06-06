@@ -2,8 +2,6 @@ package com.toniclecb.pauta.model.dto;
 
 import java.util.Date;
 
-import com.toniclecb.pauta.model.Sessao;
-
 public class SessaoResponseDTO {
 
 	private Long id;
@@ -12,13 +10,6 @@ public class SessaoResponseDTO {
 	private Date fimVotacao;
 
 	public SessaoResponseDTO() {
-	}
-
-	public SessaoResponseDTO(Sessao sessao) {
-		this.id = sessao.getId();
-		this.idPauta = sessao.getPauta().getId();
-		this.inicioVotacao = sessao.getInicioVotacao();
-		this.fimVotacao = sessao.getFimVotacao();
 	}
 
 	public Long getId() {
