@@ -11,8 +11,13 @@ public class VotoToVotoResponseDtoMapper implements Mapper<Voto, VotoResponseDTO
 
 	@Override
 	public VotoResponseDTO toResponse(Voto entity) {
-		return new VotoResponseDTO(entity.getId(), entity.getSessao().getPauta().getId(), entity.getSessao().getId(),
-				entity.getAssociado().getId(), entity.isVoto() ? "SIM" : "NÃO", entity.getDataVoto());
+		return new VotoResponseDTO(
+				entity.getId(),
+				entity.getSessao().getPauta().getId(),
+				entity.getSessao().getId(),
+				entity.getAssociado().getId(),
+				entity.isVoto() ? "SIM" : "NÃO",
+				entity.getDataVoto());
 	}
 
 }

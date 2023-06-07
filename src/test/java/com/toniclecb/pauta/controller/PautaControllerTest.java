@@ -5,9 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +32,7 @@ import io.restassured.specification.RequestSpecification;
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(OrderAnnotation.class)
 public class PautaControllerTest {
 	private RequestSpecification specification;
 	
@@ -50,6 +54,7 @@ public class PautaControllerTest {
 	}
 	
 	@Test
+	@Order(1)
     public void testInsertPauta() {
 		PautaRequestDTO request = getPautaRequestDTO();
 		PautaResponseDTO response = insertPauta(request);
@@ -81,6 +86,7 @@ public class PautaControllerTest {
 	}
 	
 	@Test
+	@Order(2)
 	public void testGetPauta() {
 		PautaRequestDTO request = getPautaRequestDTO();
 		PautaResponseDTO pautaResponse = insertPauta(request);

@@ -21,6 +21,7 @@ import com.toniclecb.pauta.model.dto.SessaoResultadoResponseDTO;
 import com.toniclecb.pauta.model.dto.VotoRequestDTO;
 import com.toniclecb.pauta.model.dto.VotoResponseDTO;
 import com.toniclecb.pauta.model.mapper.Mapper;
+import com.toniclecb.pauta.model.mapper.impl.VotoToVotoResponseDtoMapper;
 import com.toniclecb.pauta.model.projection.VotoProjection;
 import com.toniclecb.pauta.repository.AssociadoRepository;
 import com.toniclecb.pauta.repository.PautaRepository;
@@ -61,7 +62,15 @@ public class SessaoService {
 				() -> new ResourceNotFoundException("Pauta não encontrada para o id: " + requestDto.getIdPauta()));
 
 		Sessao saved = sessaoRepository.save(requestDto.toEntity(pauta));
+		return mapSessaoToResponse(saved);
+	}
+
+	protected SessaoResponseDTO mapSessaoToResponse(Sessao saved) {
 		return sessaoToSessaoResponseMapper.toResponse(saved);
+	}
+
+	protected VotoResponseDTO mapVotoToResponse(Voto saved) {
+		return votoToVotoResponseMapper.toResponse(saved);
 	}
 
 	public SessaoResultadoResponseDTO getSessao(Long idPauta) {
@@ -94,14 +103,14 @@ public class SessaoService {
 	public VotoResponseDTO insertVoto(VotoRequestDTO requestDto) {
 		Associado associado = getAssociado(requestDto);
 		Pauta pauta = getPauta(requestDto);
-		Sessao sessao = getSessao(pauta);
+		Sessao sessao = getSessaoEntity(pauta);
 		
 		Voto votoEntity = getVotoEntity(requestDto, associado, sessao);
 
 		try {
 			Voto saved = votoRepository.save(votoEntity);
 
-			return votoToVotoResponseMapper.toResponse(votoEntity);
+			return mapVotoToResponse(saved);
 		} catch (DataIntegrityViolationException e) {
 			log.info("O voto do associado já foi contabilizado!");
 			throw new ConflictException("O voto do associado já foi contabilizado!");
@@ -135,7 +144,7 @@ public class SessaoService {
 	 * @param requestDto
 	 * @return A entidade do banco
 	 */
-	private Sessao getSessao(Pauta pauta) {
+	private Sessao getSessaoEntity(Pauta pauta) {
 		Sessao sessao = sessaoRepository.findByPautaId(pauta.getId());
 		if (sessao == null) {
 			log.info("A votação ainda não foi iniciada! IdPauta: " + pauta.getId());
@@ -152,7 +161,6 @@ public class SessaoService {
 		}
 		return dataVoto;
 	}
-
 
 	/**
 	 * Valida o periodo de votação;

@@ -4,7 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 import java.util.Optional;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -35,9 +35,9 @@ public class PautaServiceTest {
 
         PautaResponseDTO response = service.getPautaById(10L);
 
-        Assert.assertEquals(pautaEntity.getId(), response.getId());
-        Assert.assertEquals(pautaEntity.getNome(), response.getNome());
-        Assert.assertEquals(pautaEntity.getDescricao(), response.getDescricao());
+        Assertions.assertEquals(pautaEntity.getId(), response.getId());
+        Assertions.assertEquals(pautaEntity.getNome(), response.getNome());
+        Assertions.assertEquals(pautaEntity.getDescricao(), response.getDescricao());
     }
     
     @Test
@@ -48,9 +48,9 @@ public class PautaServiceTest {
         PautaResponseDTO response = service.insertPauta(
         		new PautaRequestDTO(pautaEntity.getNome(), pautaEntity.getDescricao()));
 
-        Assert.assertEquals(pautaEntity.getId(), response.getId());
-        Assert.assertEquals(pautaEntity.getNome(), response.getNome());
-        Assert.assertEquals(pautaEntity.getDescricao(), response.getDescricao());
+        Assertions.assertEquals(pautaEntity.getId(), response.getId());
+        Assertions.assertEquals(pautaEntity.getNome(), response.getNome());
+        Assertions.assertEquals(pautaEntity.getDescricao(), response.getDescricao());
     }
     
 }
