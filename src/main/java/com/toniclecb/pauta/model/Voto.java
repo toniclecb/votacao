@@ -51,8 +51,6 @@ public class Voto implements Serializable {
 		this.dataVoto = dataVoto;
 	}
 
-
-
 	public Long getId() {
 		return id;
 	}

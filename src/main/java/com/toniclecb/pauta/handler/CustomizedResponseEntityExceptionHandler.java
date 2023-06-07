@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -22,6 +24,7 @@ import com.toniclecb.pauta.exception.ResourceNotFoundException;
 
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+	private static final Logger log = LoggerFactory.getLogger(CustomizedResponseEntityExceptionHandler.class);
 
 	/**
 	 * Converte o erro de validacao padrao para um retorno mais legivel
@@ -29,6 +32,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+		log.error("Handler: Error MethodArgumentNotValidException, message: " + ex.getMessage());
 		Map<String, String> errors = new HashMap<>();
 		ex.getBindingResult().getAllErrors().forEach((error) ->{
 
@@ -44,6 +48,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	 */
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public final ResponseEntity<ExceptionResponse> handleResourceNotFoundException(Exception ex, WebRequest request) {
+		log.error("Handler: Error ResourceNotFoundException, message: " + ex.getMessage());
 		ExceptionResponse exceptionResponse = 
 				new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
@@ -51,6 +56,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 	@ExceptionHandler(ConflictException.class)
 	public final ResponseEntity<ExceptionResponse> handleConflictException(Exception ex, WebRequest request) {
+		log.error("Handler: Error ConflictException, message: " + ex.getMessage());
 		ExceptionResponse exceptionResponse =
 				new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
@@ -58,6 +64,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 	@ExceptionHandler(ForbiddenException.class)
 	public final ResponseEntity<ExceptionResponse> handleForbiddenException(Exception ex, WebRequest request) {
+		log.error("Handler: Error ForbiddenException, message: " + ex.getMessage());
 		ExceptionResponse exceptionResponse =
 				new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
