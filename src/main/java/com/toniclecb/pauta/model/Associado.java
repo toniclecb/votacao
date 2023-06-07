@@ -21,7 +21,7 @@ public class Associado implements Serializable {
 	@Column
 	private String nome;
 
-	@Column
+	@Column(unique = true)
 	private String cpf;
 	
 	public Associado() {

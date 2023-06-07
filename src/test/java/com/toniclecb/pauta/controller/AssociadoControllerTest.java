@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.toniclecb.pauta.exception.ExceptionResponse;
 import com.toniclecb.pauta.model.dto.AssociadoRequestDTO;
 import com.toniclecb.pauta.model.dto.AssociadoResponseDTO;
 
@@ -62,5 +63,35 @@ public class AssociadoControllerTest {
         assertNotNull(response.getId());
         assertEquals(request.getNome(), response.getNome());
         assertEquals(request.getCpf(), response.getCpf());
+	}
+	
+	@Test
+    public void testInsertAssociadoDuplicado() {
+		AssociadoRequestDTO request = new AssociadoRequestDTO("Ciclano", "36126581075");
+		
+		ExtractableResponse<Response> extract = given().spec(specification)
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .post()
+            .then()
+                .statusCode(201)
+                .extract();
+        AssociadoResponseDTO response = extract
+                .body().as(AssociadoResponseDTO.class);
+        ExtractableResponse<Response> extract2 = given().spec(specification)
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .post()
+            .then()
+                .statusCode(409)
+                .extract();
+
+        assertNotNull(response);
+
+        ExceptionResponse errorResponse = extract2.body().as(ExceptionResponse.class);
+        assertNotNull(errorResponse);
+        assertEquals("Associado com este documento já foi cadastrado!", errorResponse.getMessage());
 	}
 }
