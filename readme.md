@@ -15,6 +15,10 @@ A aplicação pode ser executada com o seguinte comando:
 
 > mvn spring-boot:run
 
+## Postman
+
+Junto a aplicação segue uma collection do Postman que auxilia nos testes da aplicação (arquivo votacao.postman_collection.json).
+
 ## Documentação
 
 Para documentar a API foi utilizado a biblioteca Spring Doc que oferece documentação via página web no endereço:
@@ -31,6 +35,7 @@ Quanto a documentação do código está foi adicionada apenas em ocasiões espe
 
 Algumas exceptions foram selecionadas e a classe CustomizedResponseEntityExceptionHandler foi criada para customizar os retornos das exceptions.
 Os retornos de erro da API se resumem a parâmetros com problemas (retorno 400) e registros não encontrados (retorno 404), além disso o retorno 409 foi escolhido para representar os conflitos nas lógicas de negócio que o usuário tentou inserir.
+Essas exceptions (ConflictException), a nível de simplicidade, foram lançadas diretamente nos Services, porém também poderiam ser tratadas no Handler centralizando assim o tratamento.
 
 ### Melhorias
 
@@ -71,5 +76,6 @@ Mas da mesma forma que traz benefícios essa mudança traz alterações de lógi
 
 - Adicionar **mensageria**, dentre outros benefícios, é uma forma de acelerar a troca de informações entre aplicações, então postar uma mensagem informando o fim da votação e seu resultado pode beneficar os sistemas que recebem essa mensagem.
 
-- O ponto mais crítico dessa aplicação é a inserção de um voto, pois existem diversas checagens que buscam informações no banco de dados para garantir a integridade dos dados. Neste ponto, poderia ser optado por utilização de uma tecnologia de **Cache**. Uma das opções, por exemplo, seria deixar em cache as sessões com votação em andamento, assim eliminaríamos a necessidade de busca no banco de dados a cada requisição.g
+- O ponto mais crítico dessa aplicação é a inserção de um voto, pois existem diversas checagens que buscam informações no banco de dados para garantir a integridade dos dados. Neste ponto, poderia ser optado por utilização de uma tecnologia de **Cache**. Uma das opções, por exemplo, seria deixar em cache as sessões com votação em andamento, assim eliminaríamos a necessidade de busca no banco de dados a cada requisição.
 
+- Um ponto sugerido na avaliação que não foi implementado é a validação de CPF em uma aplicação externa. Este requisito poderia ser implementado com Spring Cloud OpenFeign que simplifica a chamada de recursos externos.
