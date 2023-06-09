@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.toniclecb.pauta.model.dto.PautaResponseDTO;
 import com.toniclecb.pauta.model.dto.SessaoRequestDTO;
 import com.toniclecb.pauta.model.dto.SessaoResponseDTO;
 import com.toniclecb.pauta.model.dto.SessaoResultadoResponseDTO;
-import com.toniclecb.pauta.model.dto.VotoRequestDTO;
-import com.toniclecb.pauta.model.dto.VotoResponseDTO;
 import com.toniclecb.pauta.service.SessaoService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,14 +22,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 /**
- * Controle utilizado para gerenciamento do processo de votacao
+ * Controle utilizado para gerenciamento das sessoes de votacao
  * 
  * @author cleiton.balansin
  *
  */
 @RestController
-@RequestMapping("/api/v1/votacao")
-@Tag(name = "Votação", description = "Possui todas as chamadas para executar o processo de votação.")
+@RequestMapping("/api/v1/sessao")
+@Tag(name = "Votação", description = "Possui as chamadas para processar as sessões.")
 public class SessaoController {
 	@Autowired
 	private SessaoService service;
@@ -51,21 +48,6 @@ public class SessaoController {
 		return ResponseEntity.created(null).body(saved);
 	}
 
-	@PostMapping("/voto")
-	@Operation(summary = "Enviar um voto de um associado")
-	@ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Voto realizado com sucesso!"),
-        @ApiResponse(responseCode = "400", description = "Informações fornecidas incorretas!"),
-        @ApiResponse(responseCode = "404", description = "Recurso não encontrado!"),
-        @ApiResponse(responseCode = "403", description = "O período de votação para a pauta já foi finalizado!"),
-        @ApiResponse(responseCode = "409", description = "A votação ainda não foi iniciada ou o voto já foi realizado pelo associado!"),
-	})
-	public ResponseEntity<VotoResponseDTO> post(@Parameter(description = "Voto do associado para a determinada pauta") @Valid @RequestBody VotoRequestDTO votoDto){
-		VotoResponseDTO saved = service.insertVoto(votoDto);
-
-		return ResponseEntity.created(null).body(saved);
-	}
-	
 	@GetMapping(value = "/{id}")
 	@Operation(summary = "Buscar uma sessão de votação")
 	@ApiResponses({
