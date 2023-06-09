@@ -2,7 +2,15 @@ package com.toniclecb.pauta.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class VotoRequestDTO {
 
 	@NotNull(message = "Pauta é obrigatória!")
@@ -16,37 +24,5 @@ public class VotoRequestDTO {
 	@NotNull(message = "Voto do associado é obrigatório!")
 	@Schema(description = "Voto do associado para a pauta (Qualquer texto diferente de 'SIM' é considerado 'NÃO'!", example = "SIM")
 	private String voto;
-	
-	public VotoRequestDTO() {
-	}
-	
-	public VotoRequestDTO(Long idPauta, Long idAssociado, String voto) {
-		this.idPauta = idPauta;
-		this.idAssociado = idAssociado;
-		this.voto = voto;
-	}
 
-	public Long getIdPauta() {
-		return idPauta;
-	}
-
-	public void setIdPauta(Long idPauta) {
-		this.idPauta = idPauta;
-	}
-
-	public Long getIdAssociado() {
-		return idAssociado;
-	}
-
-	public void setIdAssociado(Long idAssociado) {
-		this.idAssociado = idAssociado;
-	}
-
-	public String getVoto() {
-		return voto;
-	}
-
-	public void setVoto(String voto) {
-		this.voto = voto;
-	}
 }

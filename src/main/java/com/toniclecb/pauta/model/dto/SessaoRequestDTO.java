@@ -1,14 +1,21 @@
 package com.toniclecb.pauta.model.dto;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.toniclecb.pauta.model.Pauta;
 import com.toniclecb.pauta.model.Sessao;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SessaoRequestDTO {
 
 	@NotNull(message = "Pauta é obrigatória!")
@@ -17,43 +24,16 @@ public class SessaoRequestDTO {
 
 	@Schema(description = "Duração, em segundos, da votação", example = "3600")
 	private Integer duracao = 60;
-	
-	public SessaoRequestDTO() {
-	}
-	
-	public SessaoRequestDTO(Long idPauta, Integer duracao) {
-		super();
-		this.idPauta = idPauta;
-		this.duracao = duracao;
-	}
 
 	public Sessao toEntity(Pauta pauta) {
 		Sessao sessao = new Sessao();
-		Date inicio = new Date();
+		LocalDateTime inicio = LocalDateTime.now();
 		sessao.setInicioVotacao(inicio);
-		
-		Calendar data = Calendar.getInstance();
-		data.setTime(inicio);
-		data.add(Calendar.SECOND, duracao);
-		sessao.setFimVotacao(data.getTime());
+
+		LocalDateTime fim = inicio.plusSeconds(duracao);
+		sessao.setFimVotacao(fim);
 		
 		sessao.setPauta(pauta);
 		return sessao;
-	}
-
-	public Long getIdPauta() {
-		return idPauta;
-	}
-
-	public void setIdPauta(Long idPauta) {
-		this.idPauta = idPauta;
-	}
-
-	public Integer getDuracao() {
-		return duracao;
-	}
-
-	public void setDuracao(Integer duracao) {
-		this.duracao = duracao;
 	}
 }

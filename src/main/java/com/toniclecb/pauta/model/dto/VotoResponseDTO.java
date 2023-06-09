@@ -1,9 +1,17 @@
 package com.toniclecb.pauta.model.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class VotoResponseDTO {
 
 	@Schema(description = "Código identificador do voto", example = "2")
@@ -16,60 +24,7 @@ public class VotoResponseDTO {
 	private Long idAssociado;
 	@Schema(description = "Voto contabilizado", example = "NÃO")
 	private String voto;
-	@Schema(description = "Data do voto contabilizado", example = "2023-06-06T01:05:50.925+00:00")
-	private Date dataVoto;
-	
-	public VotoResponseDTO() {
-	}
+	@Schema(description = "Data do voto contabilizado", example = "2023-06-09T10:56:45.4765228")
+	private LocalDateTime dataVoto;
 
-	public VotoResponseDTO(Long idVoto, Long idPauta, Long idSessao, Long idAssociado, String voto, Date dataVoto) {
-		super();
-		this.idVoto = idVoto;
-		this.idPauta = idPauta;
-		this.idSessao = idSessao;
-		this.idAssociado = idAssociado;
-		this.voto = voto;
-		this.dataVoto = dataVoto;
-	}
-
-
-	public Long getIdPauta() {
-		return idPauta;
-	}
-
-	public void setIdPauta(Long idPauta) {
-		this.idPauta = idPauta;
-	}
-
-	public Long getIdSessao() {
-		return idSessao;
-	}
-
-	public void setIdSessao(Long idSessao) {
-		this.idSessao = idSessao;
-	}
-
-	public Long getIdAssociado() {
-		return idAssociado;
-	}
-
-	public void setIdAssociado(Long idAssociado) {
-		this.idAssociado = idAssociado;
-	}
-
-	public String getVoto() {
-		return voto;
-	}
-
-	public void setVoto(String voto) {
-		this.voto = voto;
-	}
-
-	public Date getDataVoto() {
-		return dataVoto;
-	}
-
-	public void setDataVoto(Date dataVoto) {
-		this.dataVoto = dataVoto;
-	}
 }

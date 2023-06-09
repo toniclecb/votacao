@@ -1,7 +1,7 @@
 package com.toniclecb.pauta.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +11,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table
 public class Sessao implements Serializable {
@@ -20,54 +29,16 @@ public class Sessao implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
+	@NonNull
 	@OneToOne
 	@JoinColumn(name ="id_pauta", referencedColumnName= "id")
 	private Pauta pauta;
 
 	@Column
-	private Date inicioVotacao;
+	private LocalDateTime inicioVotacao;
 	
 	@Column
-	private Date fimVotacao;
-	
-	public Sessao() {
-	}
-	
-	public Sessao(Pauta pauta) {
-		super();
-		this.pauta = pauta;
-	}
+	private LocalDateTime fimVotacao;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getInicioVotacao() {
-		return inicioVotacao;
-	}
-
-	public void setInicioVotacao(Date inicioVotacao) {
-		this.inicioVotacao = inicioVotacao;
-	}
-
-	public Date getFimVotacao() {
-		return fimVotacao;
-	}
-
-	public void setFimVotacao(Date fimVotacao) {
-		this.fimVotacao = fimVotacao;
-	}
-
-	public Pauta getPauta() {
-		return pauta;
-	}
-
-	public void setPauta(Pauta pauta) {
-		this.pauta = pauta;
-	}
 }

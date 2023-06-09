@@ -4,7 +4,15 @@ import com.toniclecb.pauta.model.Associado;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AssociadoRequestDTO {
 
 	@NotBlank(message = "Nome é obrigatório!")
@@ -14,36 +22,8 @@ public class AssociadoRequestDTO {
 	@NotBlank(message = "CPF é obrigatório!")
 	@Schema(description = "CPF do associado", example = "36599334067")
 	private String cpf;
-	
-	public AssociadoRequestDTO() {
-	}
-	
-	public AssociadoRequestDTO(String nome, String cpf) {
-		super();
-		this.nome = nome;
-		this.cpf = cpf;
-	}
-
 
 	public Associado toEntity() {
 		return new Associado(null, this.nome, this.cpf);
 	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-	
-	
 }
