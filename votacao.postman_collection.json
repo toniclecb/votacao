@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ff1d41fb-65a5-40af-8f9a-ca449caed05a",
+		"_postman_id": "a965e009-bc89-4f53-8af1-7de9d4e35e7a",
 		"name": "Pauta votacao",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -184,7 +184,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/votacao",
+					"raw": "http://localhost:8080/api/v1/sessao",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -193,7 +193,7 @@
 					"path": [
 						"api",
 						"v1",
-						"votacao"
+						"sessao"
 					]
 				}
 			},
@@ -214,7 +214,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/votacao/voto",
+					"raw": "http://localhost:8080/api/v1/votacao",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -223,8 +223,7 @@
 					"path": [
 						"api",
 						"v1",
-						"votacao",
-						"voto"
+						"votacao"
 					]
 				}
 			},
@@ -236,7 +235,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/votacao/1",
+					"raw": "http://localhost:8080/api/v1/sessao/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -245,7 +244,7 @@
 					"path": [
 						"api",
 						"v1",
-						"votacao",
+						"sessao",
 						"1"
 					]
 				}
